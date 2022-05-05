@@ -22,26 +22,32 @@ const createCollege = async function(req,res){
     if(!data.name){
         return res.status(400).send({status:false, msg: "Name is Required"}) 
     }
+    if(!/^[a-zA-Z ]*$/.test(data.name)){
+        return res.status(400).send({status:false, msg: "Please enter a valid Name"}) 
+       }
     const duplicateName = await collegeModel.findOne({name:data.name})
     if(duplicateName){
      return res.status(400).send({status:false, msg: "This College Name is already exist"})
     }
     if(!isValid(data.name)){
-        return res.status(400).send({status:false, msg: "Please enter the Valid Name"}) 
+        return res.status(400).send({status:false, msg: "Please enter the Name"}) 
     }
    
     if(!data.fullName){
         return res.status(400).send({status:false, msg: "Full Name is Required"}) 
     }
+    if(!/^[a-zA-Z,\-. ]+$/.test(data.fullName)){
+        return res.status(400).send({status:false, msg: "Please enter a valid Full Name"}) 
+       }
     if(!isValid(data.fullName)){
         return res.status(400).send({status:false, msg: "Please enter the Full Name"}) 
     }
     if(!data.logoLink){
         return res.status(400).send({status:false, msg: "Logo Link is Required"}) 
     }
-    if(!isValid(data.logoLink)){
-        return res.status(400).send({status:false, msg: "Please enter the Logo Link"}) 
-    }
+    if(!/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(data.logoLink)){
+        return res.status(400).send({status:false, msg: "Please enter a valid Logo Link"}) 
+       }
     const college = await collegeModel.create(data)
     return res.status(201).send({status:true, data: college})
 

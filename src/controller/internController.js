@@ -24,14 +24,19 @@ const createIntern = async function(req,res){
 
        if(!data.name){
         return res.status(400).send({status:false, msg: "Name is Required"}) 
-    }
-   
+    } 
+    if(!/^[a-zA-Z ]*$/.test(data.name)){
+        return res.status(400).send({status:false, msg: "Please enter a valid Name"}) 
+       }  
        if(!isValid(data.name)){
            return res.status(400).send({status:false, msg: "Please Enter Your Name Dude"}) 
        }
-   
+       
        if(!data.email){
            return res.status(400).send({status:false, msg: "email should be present"}) 
+       }
+       if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)){
+        return res.status(400).send({status:false, msg: "Please enter a valid email"})   
        }
        const duplicateEmail = await internModel.findOne({email:data.email})
        if(duplicateEmail){
@@ -41,6 +46,9 @@ const createIntern = async function(req,res){
        if(!data.mobile){
            return res.status(400).send({status:false, msg: "Mobile Number should be present"}) 
        }
+       if(!/^(\+\d{1,3}[- ]?)?\d{10}$/.test(data.mobile)){
+        return res.status(400).send({status:false, msg: "Please enter a valid Mobile Number"}) 
+       }
        const duplicateMobile = await internModel.findOne({mobile:data.mobile})
        if(duplicateMobile){
         return res.status(400).send({status:false, msg: "Mobile Number is already exist"})
@@ -49,14 +57,14 @@ const createIntern = async function(req,res){
        if(!data.collegeName){
         return res.status(400).send({status:false, msg: "CollegeName should be present"}) 
     }
-    const find = await collegeModel.findOne({name:data.collegeName, isDeleted:false}).select({_id:1})
-    if(find.length<=0){
+    const findCollege = await collegeModel.findOne({name:data.collegeName, isDeleted:false}).select({_id:1})
+    if(!findCollege){
         return res.status(404).send({status:false, msg: "No College Exist with this Name"}) 
     } 
-    
-    const id= find._id;
+
+    const id= findCollege._id;
     data.collegeId= id
-    
+
        const intern = await internModel.create(data)
        return res.status(201).send({status:true, data: intern})
    

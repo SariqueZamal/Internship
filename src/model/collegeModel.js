@@ -18,7 +18,7 @@ const collegeSchema = new mongoose.Schema(
     logoLink: {
       type: String,
       trim: true,
-      require: "Please Enter the Logo Link",
+      require: "Please Enter the Logo Link"
     },
 
     isDeleted: {

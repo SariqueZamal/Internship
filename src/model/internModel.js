@@ -15,12 +15,6 @@ const internSchema = new mongoose.Schema(
         unique: true,
         trim:true,
         lowercase:true,
-        validate: {
-          validator: function(email) {
-              return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-          },
-          message: "Please enter a valid email", isAsync: false
-      }
       },
       
        mobile: {
@@ -28,13 +22,8 @@ const internSchema = new mongoose.Schema(
         required: 'Mobile Number should be present',
         unique: true,
         trim:true,
-        validate: {
-          validator: function(mobile) {
-              return /^(\+\d{1,3}[- ]?)?\d{10}$/.test(mobile);
-          },
-          message: "Please enter a valid Mobile Number", isAsync: false 
-        }
       },
+      
        collegeId: {
            type:ObjectId,
             ref: 'college' 

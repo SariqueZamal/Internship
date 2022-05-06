@@ -45,7 +45,7 @@ const createCollege = async function(req,res){
     if(!data.logoLink){
         return res.status(400).send({status:false, msg: "Logo Link is Required"}) 
     }
-    if(!/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(data.logoLink)){
+    if(!/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)\.[a-z]{2,5}(:[0-9]{1,5})?(\/.)?$/.test(data.logoLink)){
         return res.status(400).send({status:false, msg: "Please enter a valid Logo Link"}) 
        }
     const college = await collegeModel.create(data)
